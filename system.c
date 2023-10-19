@@ -32,7 +32,7 @@ ClientType* ptr2HeadClient = NULL;
 
 void InitClientsDatabase(void)
 {
-	char names[10][20] = {"Abdulrahman","Khalid","Kareem","Nada","Haneen","Aya","Yussif","Sara","Muhamad","Mamoun"};
+	char names[10][20] = {"Name 1","Name 2","Name 3","Name 4","Name 5","Name 6","Name 7","Name 8","Name 9","Name 10"};
 	for(int counter = 0; counter < 10; counter++)
 	{
 		ClientData new_client_data = {"","",10000+(counter * 100),100+(counter * 11),100000+(counter * 101),(15230 + counter)};
