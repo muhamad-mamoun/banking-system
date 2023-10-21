@@ -74,58 +74,46 @@ void StartMenu(void)
 
 void AdminLoginMenu(void)
 {
-	while(1)
+	AdminData entered_admin_data;
+	DisplayAdminLoginMenu();
+
+	fflush(stdin);
+	MoveCursor(11,2);
+	gets(entered_admin_data.user_name);
+	fflush(stdin);
+	MoveCursor(10,3);
+	gets(entered_admin_data.password);
+
+	UserDataStateType admin_data_state = CheckAdminData(&entered_admin_data);
+	if(admin_data_state == RIGHT)
 	{
-		AdminData entered_admin_data;
-		DisplayAdminLoginMenu();
-
-		fflush(stdin);
-		MoveCursor(11,2);
-		gets(entered_admin_data.user_name);
-		fflush(stdin);
-		MoveCursor(10,3);
-		gets(entered_admin_data.password);
-
-		UserDataStateType admin_data_state = CheckAdminData(&entered_admin_data);
-		if(admin_data_state == RIGHT)
-		{
-			ptr2menuFunction = AdminControlMenu;
-			break;
-		}
-		else
-		{
-			printf("\n\nIncorrect Data!");
-			ptr2menuFunction = StartMenu;
-			break;
-		}
+		ptr2menuFunction = AdminControlMenu;
+	}
+	else
+	{
+		ptr2menuFunction = StartMenu;
 	}
 }
 
 void ClientLoginMenu(void)
 {
-	while(1)
+	DisplayClientLoginMenu();
+
+	fflush(stdin);
+	MoveCursor(11,2);
+	gets(g_selected_client_data.user_name);
+	fflush(stdin);
+	MoveCursor(10,3);
+	gets(g_selected_client_data.password);
+
+	UserDataStateType client_data_state = CheckClientData(&g_selected_client_data);
+	if(client_data_state == RIGHT)
 	{
-		DisplayClientLoginMenu();
-
-		fflush(stdin);
-		MoveCursor(11,2);
-		gets(g_selected_client_data.user_name);
-		fflush(stdin);
-		MoveCursor(10,3);
-		gets(g_selected_client_data.password);
-
-		UserDataStateType client_data_state = CheckClientData(&g_selected_client_data);
-		if(client_data_state == RIGHT)
-		{
-			ptr2menuFunction = ClientDataMenu;
-			break;
-		}
-		else
-		{
-			printf("\n\nIncorrect Data!");
-			ptr2menuFunction = StartMenu;
-			break;
-		}
+		ptr2menuFunction = ClientDataMenu;
+	}
+	else
+	{
+		ptr2menuFunction = StartMenu;
 	}
 }
 
@@ -156,117 +144,101 @@ void AdminControlMenu(void)
 
 void ClientsDatabaseMenu(void)
 {
-	while(1)
-	{
-		DisplayClientDatabaseMenu();
+	DisplayClientDatabaseMenu();
 
-		char user_input = '\0';
-		printf("\n\nEnter 'E' To Exit: ");
-		scanf(" %c",&user_input);
-		if(user_input == 'E' || user_input == 'e')
-		{
-			ptr2menuFunction = AdminControlMenu;
-			break;
-		}
-		else
-		{
-			/* Do Nothing. */
-		}
+	char user_input = '\0';
+	printf("\n\nEnter 'E' To Exit: ");
+	scanf(" %c",&user_input);
+	if(user_input == 'E' || user_input == 'e')
+	{
+		ptr2menuFunction = AdminControlMenu;
+	}
+	else
+	{
+		/* Do Nothing. */
 	}
 }
 
 void AddNewClientMenu(void)
 {
-	while(1)
+	ClientData new_client_data;
+	DisplayAddNewClientMenu();
+
+	fflush(stdin);
+	MoveCursor(11,2);
+	gets(new_client_data.user_name);
+
+	fflush(stdin);
+	MoveCursor(10,3);
+	gets(new_client_data.password);
+
+	fflush(stdin);
+	MoveCursor(8,4);
+	scanf("%f",&new_client_data.credit);
+
+	fflush(stdin);
+	MoveCursor(8,5);
+	scanf("%f",&new_client_data.salary);
+
+	fflush(stdin);
+	MoveCursor(7,6);
+	scanf("%f",&new_client_data.taxes);
+
+	fflush(stdin);
+	MoveCursor(4,7);
+	scanf("%d",&new_client_data.id);
+
+	CreateNewAccount(&new_client_data);
+	printf("\nAccount created successfully.");
+
+
+	char user_input = '\0';
+	printf("\nEnter 'E' To Exit: ");
+	scanf(" %c",&user_input);
+	if(user_input == 'E' || user_input == 'e')
 	{
-		ClientData new_client_data;
-		DisplayAddNewClientMenu();
-
-		fflush(stdin);
-		MoveCursor(11,2);
-		gets(new_client_data.user_name);
-
-		fflush(stdin);
-		MoveCursor(10,3);
-		gets(new_client_data.password);
-
-		fflush(stdin);
-		MoveCursor(8,4);
-		scanf("%f",&new_client_data.credit);
-
-		fflush(stdin);
-		MoveCursor(8,5);
-		scanf("%f",&new_client_data.salary);
-
-		fflush(stdin);
-		MoveCursor(7,6);
-		scanf("%f",&new_client_data.taxes);
-
-		fflush(stdin);
-		MoveCursor(4,7);
-		scanf("%d",&new_client_data.id);
-
-		CreateNewAccount(&new_client_data);
-		printf("\nAccount created successfully.");
-
-
-		char user_input = '\0';
-		printf("\nEnter 'E' To Exit: ");
-		scanf(" %c",&user_input);
-		if(user_input == 'E' || user_input == 'e')
-		{
-			ptr2menuFunction = AdminControlMenu;
-			break;
-		}
-		else
-		{
-			/* Do Nothing. */
-		}
+		ptr2menuFunction = AdminControlMenu;
+	}
+	else
+	{
+		/* Do Nothing. */
 	}
 }
 
 void DeleteClientMenu(void)
 {
-	while(1)
+	int client_id = 0;
+	DisplayDeleteClientMenu();
+
+	scanf("%d",&client_id);
+	DeleteAccount(client_id);
+
+	char user_input = '\0';
+	printf("\nEnter 'E' To Exit: ");
+	scanf(" %c",&user_input);
+	if(user_input == 'E' || user_input == 'e')
 	{
-		int client_id = 0;
-		DisplayDeleteClientMenu();
-
-		scanf("%d",&client_id);
-		DeleteAccount(client_id);
-
-		char user_input = '\0';
-		printf("\nEnter 'E' To Exit: ");
-		scanf(" %c",&user_input);
-		if(user_input == 'E' || user_input == 'e')
-		{
-			ptr2menuFunction = AdminControlMenu;
-			break;
-		}
-		else
-		{
-			/* Do Nothing. */
-		}
+		ptr2menuFunction = AdminControlMenu;
+	}
+	else
+	{
+		/* Do Nothing. */
 	}
 }
 
 void ClientDataMenu(void)
 {
-	while(1)
-	{
-		DisplayClientData(&g_selected_client_data);
+	DisplayClientData(&g_selected_client_data);
 
-		char user_input = '\0';
-		printf("\nEnter 'E' To Exit: ");
-		scanf(" %c",&user_input);
-		if(user_input == 'E' || user_input == 'e')
-		{
-			ptr2menuFunction = StartMenu;
-			break;
-		}
-		else
-		{
-			/* Do Nothing. */
-		}
+	char user_input = '\0';
+	printf("\nEnter 'E' To Exit: ");
+	scanf(" %c",&user_input);
+	if(user_input == 'E' || user_input == 'e')
+	{
+		ptr2menuFunction = StartMenu;
+	}
+	else
+	{
+		/* Do Nothing. */
 	}
 }
